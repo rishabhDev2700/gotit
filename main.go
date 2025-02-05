@@ -34,7 +34,7 @@ func main() {
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
 		AllowMethods: "GET,POST,PUT,DELETE,OPTIONS",
-		AllowHeaders: "Content-Type, Authorization",
+		AllowHeaders: "Content-Type",
 	}))
 	var smtpHost = os.Getenv("SMTP_HOST")
 	log.Println(smtpHost)
