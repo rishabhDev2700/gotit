@@ -8,7 +8,8 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/joho/godotenv"
+	"github.com/gofiber/fiber/v2/middleware/logger"
+	_ "github.com/joho/godotenv/autoload"
 )
 
 var receiverEmails = []string{"rishavkumar2700@gmail.com"}
@@ -28,17 +29,15 @@ func sendEmail(name, email, message, service string) error {
 }
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
 	app := fiber.New()
+	app.Use(logger.New())
 	app.Use(cors.New(cors.Config{
 		AllowOrigins: "*",
 		AllowMethods: "GET,POST,PUT,DELETE,OPTIONS",
 		AllowHeaders: "Content-Type, Authorization",
 	}))
+	var smtpHost = os.Getenv("SMTP_HOST")
+	log.Println(smtpHost)
 	app.Post("/submit", func(c *fiber.Ctx) error {
 		form := struct {
 			Name    string `form:"name"`
